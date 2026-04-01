@@ -1,6 +1,6 @@
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getDatabase, ref, onValue } from "firebase/database";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDk4ecjc_nUqIDpwk8KcwvGs40j-NAnA0M",
@@ -17,8 +17,8 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getDatabase(app);
 
-const distancia = ref(db, "dispositivo/sensor/distancia");
-const status = ref(db, "dispositivo/sensor/status");
+const distancia = ref(db, "Dispositivo/Sensor/Distancia");
+const status = ref(db, "Dispositivo/Sensor/Status");
 
 const email = document.getElementById ('email');
 const senha = document.getElementById ('senha');
@@ -28,6 +28,9 @@ const backbtn = document.getElementById ('back-btn');
 
 const login = document.querySelector('.container');
 const sistema = document.querySelector('.second-container');
+
+const dist = document.getElementById('dt');
+const situ = document.getElementById('st');
 
 function setupEvents(){
     nextbtn.addEventListener("click", (e) => {
@@ -48,3 +51,22 @@ function setupEvents(){
 }
 
 setupEvents();
+
+onValue(distancia, (snapshot) =>{
+const valorDistancia = snapshot.val();
+
+dist.innerText = valorDistancia + ' m';
+});
+
+onValue(status, (snapshot) => {
+const statu = snapshot.val();
+
+
+if(statu === false){
+    situ.innerText = "Desligado";   
+}else if(statu === true){
+    situ.innerText = "Ligado"
+}else{
+    situ.innerText = "Indefeinido"
+}
+});
